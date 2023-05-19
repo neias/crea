@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "productId": 1,
+    "username": "user1",
+    "comment": "This is a comment for product 1",
+    "addedDate": "2023-05-17"
+  },
+  {
+    "id": 2,
+    "productId": 1,
+    "username": "user2",
+    "comment": "This is another comment for product 1",
+    "addedDate": "2023-05-16"
+  }
+]

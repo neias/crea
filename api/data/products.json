@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "name": "Product 1",
+    "description": "This is product 1",
+    "score": 9.5,
+    "addedDate": "2023-05-17"
+  },
+  {
+    "id": 2,
+    "name": "Product 2",
+    "description": "This is product 2",
+    "score": 8.2,
+    "addedDate": "2023-05-16"
+  }
+]
