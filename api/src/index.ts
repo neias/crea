@@ -11,6 +11,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+app.use("/auth", authController);
 app.use("/products", productsController);
 app.use("/comments", commentsController);
 

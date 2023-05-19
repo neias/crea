@@ -53,7 +53,7 @@ const LoginPage = () => {
                   <div className="mt-5 text-center intro-x xl:mt-8 xl:text-left">
                     <Button
                       variant="primary"
-                      className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
+                      className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3 max-xl:mb-3"
                       type="submit"
                     >
                       Login
