@@ -6,12 +6,34 @@ import { FormInput } from "@/components/base-component/Form";
 import Button from "@/components/base-component/Button";
 import { twMerge } from "tailwind-merge";
 
+import { useRouter } from "next/navigation";
+
+const apiHost = process.env.API_HOST;
+
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const router = useRouter();
+
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const response = await fetch(`${apiHost}/auth/login`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+      credentials: "include",
+    });
+
+    if (response.ok) {
+      router.push("/product");
+    } else {
+      console.error("Login failed.");
+    }
   };
 
   return (
@@ -19,9 +41,7 @@ const LoginPage = () => {
       <div
         className={twMerge([
           "p-3 sm:px-8 relative h-screen lg:overflow-hidden bg-primary xl:bg-white dark:bg-darkmode-800 xl:dark:bg-darkmode-600",
-
           "before:hidden before:xl:block before:content-[''] before:w-[87%] before:-mt-[38%] before:-mb-[100%] before:-ml-[3%] before:absolute before:inset-y-0 before:left-0 before:transform before:rotate-[-4.5deg] before:bg-primary/20 before:rounded-[100%] before:dark:bg-darkmode-400",
-
           "after:hidden after:xl:block after:content-[''] after:w-[57%] after:-mt-[20%] after:-mb-[13%] after:-ml-[23%] after:absolute after:inset-y-0 after:left-0 after:transform after:rotate-[-4.5deg] after:bg-primary after:rounded-[100%] after:dark:bg-darkmode-700",
         ])}
       >

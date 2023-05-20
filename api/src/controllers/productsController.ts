@@ -23,7 +23,7 @@ const getProducts = (): Promise<any> => {
 router.get("/", verifyToken, async (_, res: Response) => {
   try {
     const products = await getProducts();
-    res.json(products);
+    res.status(200).json(products);
   } catch (err) {
     res.status(500).send(err);
   }

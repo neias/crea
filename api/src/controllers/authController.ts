@@ -13,12 +13,11 @@ const users = [
   {
     id: 1,
     username: "user",
-    // password: "$2a$08$XKk6iM.icdQXzjg4p6iX4.2k/6WNYK4AozpRc9w5IiRkA7itMDUaq", // hashed password for 'password'
     password: "$2a$10$c4kaRcuFZpa4EdgUXBdtKOfh3ApJfUqYX056KlOJpuzb2guceyCdG", // user123
   },
 ];
 
-router.post("/", async (req, res) => {
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = users.find((u) => u.username === username);
 
@@ -32,7 +31,7 @@ router.post("/", async (req, res) => {
       expiresIn: "1m",
     });
 
-    const serialized = serialize("CreaJWT", token, {
+    const serialized = serialize("JWTToken", token, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 30,
       secure: false,
@@ -42,7 +41,28 @@ router.post("/", async (req, res) => {
     return res.status(200).json({ token });
   }
 
-  res.status(400).send("Invalid username or password");
+  res.status(400).json({ message: "Invalid username or password" });
+});
+
+router.get("/logout", (req, res) => {
+  const { cookies } = req;
+
+  const jwt = cookies?.JWTToken;
+
+  if (!jwt) {
+    return res.json({
+      message: "already logged out",
+    });
+  }
+
+  const serialized = serialize("JWTToken", "", {
+    httpOnly: true,
+    secure: false,
+    maxAge: -1,
+  });
+
+  res.setHeader("Set-Cookie", serialized);
+  res.status(200).json({ message: "successfully logged out" });
 });
 
 export default router;

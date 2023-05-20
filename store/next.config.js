@@ -3,6 +3,9 @@ const nextConfig = {
   images: {
     domains: ["www.creainc.us", "res.cloudinary.com"],
   },
+  env: {
+    API_HOST: "http://localhost:3001",
+  },
 };
 
 module.exports = nextConfig;

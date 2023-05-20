@@ -1,18 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
-import Button from "@/components/base-component/Button";
+const apiHost = process.env.API_HOST;
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
 
+  const router = useRouter();
+
   useEffect(() => {
-    // Get your products data from API
-    // Example products data:
+    fetch(`${apiHost}/products`, {
+      credentials: "include",
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error("Invalid token");
+        }
+        return res;
+      })
+      .then((res) => res.json())
+      .then((res) => setProducts(res.products))
+      .catch((e) => {
+        console.log(e);
+        //        router.push("./login");
+      });
+
     const exampleProductsData = Array.from({ length: 10 }, (_, i) => ({
       id: i,
       name: `Product ${i + 1}`,
