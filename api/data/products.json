@@ -3,40 +3,50 @@
     "id": 1,
     "name": "Apple iPhone 13",
     "description": "Apple iPhone 13 with A15 Bionic chip, 5.4-inch Super Retina XDR display.",
+    "details": "The iPhone 13 from Apple boasts the powerful A15 Bionic chip, offering exceptional performance and energy efficiency. It also features a 5.4-inch Super Retina XDR display for crystal clear visuals, 5G capability, a dual-camera system for stunning photos and videos, and a long-lasting battery life.",
     "score": 9.5,
-    "addedDate": "2023-05-17",
+    "arrivalDate": "2023-05-17",
+    "price": 999.99,
     "image": "https://i.ibb.co/3NYJgvY/phone-13.jpg"
   },
   {
     "id": 2,
     "name": "Samsung Galaxy S22",
     "description": "Samsung Galaxy S22 with Exynos 2200, 6.2-inch Dynamic AMOLED 2X.",
+    "details": "The Samsung Galaxy S22 is a feature-packed smartphone with Samsung's own Exynos 2200 chip. It offers a stunning 6.2-inch Dynamic AMOLED 2X display, 5G connectivity, a high-quality camera system with advanced features like Single Take, and a long-lasting, fast-charging battery.",
     "score": 8.7,
-    "addedDate": "2023-05-17",
+    "price": 849.99,
+    "arrivalDate": "2023-05-17",
     "image": "https://i.ibb.co/wKzm3JH/samsun-s22-01.jpg"
   },
   {
     "id": 3,
     "name": "Dell XPS 13",
     "description": "Dell XPS 13 Laptop with Intel i7, 13.4-inch 4K display.",
+    "details": "The Dell XPS 13 is a premium laptop that features an Intel i7 processor for impressive performance, a 13.4-inch 4K display for incredible detail, and a sleek, portable design. It also comes with a large SSD for fast data access and storage, Thunderbolt ports for connecting high-speed peripherals, and a long-lasting battery for extended use on the go.",
     "score": 9.2,
-    "addedDate": "2023-05-18",
+    "price": 1199.99,
+    "arrivalDate": "2023-05-18",
     "image": "https://i.ibb.co/TmfXsjf/dell-xps-13.jpg"
   },
   {
     "id": 4,
     "name": "Sony PlayStation 5",
     "description": "Sony PlayStation 5 Console with Ultra-High Speed SSD, Ray Tracing, 4K-TV Gaming.",
+    "details": "The Sony PlayStation 5 is a powerful gaming console with an ultra-high speed SSD for faster load times, ray tracing for realistic lighting, and support for 4K-TV gaming. It also features a custom CPU and GPU for high-fidelity graphics, 3D audio for an immersive gaming experience, and backward compatibility with PlayStation 4 games.",
     "score": 7.5,
-    "addedDate": "2023-05-18",
+    "price": 499.99,
+    "arrivalDate": "2023-05-18",
     "image": "https://i.ibb.co/J32wtzP/ps5.jpg"
   },
   {
     "id": 5,
     "name": "Bose QuietComfort 35",
     "description": "Bose QuietComfort 35 Wireless Bluetooth Headphones, Noise-Cancelling.",
+    "details": "The Bose QuietComfort 35 wireless headphones provide world-class noise cancellation, making quiet sound quieter and music sound better. They're Alexa-enabled for voice access to music, information, and more, and provide balanced audio performance at any volume thanks to volume-optimized EQ. They also offer hassle-free Bluetooth pairing, personalized settings, and access to future updates through the Bose Connect app.",
     "score": 8.0,
-    "addedDate": "2023-05-19",
+    "price": 349.99,
+    "arrivalDate": "2023-05-19",
     "image": "https://i.ibb.co/CBzKzj9/bose-qc35.jpg"
   }
 ]

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const ProductList = ({ product }) => {
   return (
@@ -8,7 +9,7 @@ const ProductList = ({ product }) => {
     >
       <div className="box">
         <div className="p-5">
-          <div className="h-40 overflow-hidden rounded-md 2xl:h-56 image-fit before:block before:absolute before:w-full before:h-full before:top-0 before:left-0 before:z-10">
+          <div className="h-40 overflow-hidden rounded-md 2xl:h-56 image-fit">
             <Image
               src={product.image}
               className="rounded-md"
@@ -17,7 +18,10 @@ const ProductList = ({ product }) => {
               alt="Picture of the author"
             />
           </div>
-          <span className="z-10 px-2 py-1 m-5 text-lg">{product.name}</span>
+
+          <span className="z-10 px-2 py-1 m-5 text-lg">
+            <Link href={`/product/${product.id}`}>{product.name}</Link>
+          </span>
         </div>
       </div>
     </div>
