@@ -1,16 +1,42 @@
 [
   {
     "id": 1,
-    "name": "Product 1",
-    "description": "This is product 1",
+    "name": "Apple iPhone 13",
+    "description": "Apple iPhone 13 with A15 Bionic chip, 5.4-inch Super Retina XDR display.",
     "score": 9.5,
-    "addedDate": "2023-05-17"
+    "addedDate": "2023-05-17",
+    "image": "https://i.ibb.co/3NYJgvY/phone-13.jpg"
   },
   {
     "id": 2,
-    "name": "Product 2",
-    "description": "This is product 2",
-    "score": 8.2,
-    "addedDate": "2023-05-16"
+    "name": "Samsung Galaxy S22",
+    "description": "Samsung Galaxy S22 with Exynos 2200, 6.2-inch Dynamic AMOLED 2X.",
+    "score": 8.7,
+    "addedDate": "2023-05-17",
+    "image": "https://i.ibb.co/wKzm3JH/samsun-s22-01.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Dell XPS 13",
+    "description": "Dell XPS 13 Laptop with Intel i7, 13.4-inch 4K display.",
+    "score": 9.2,
+    "addedDate": "2023-05-18",
+    "image": "https://i.ibb.co/TmfXsjf/dell-xps-13.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Sony PlayStation 5",
+    "description": "Sony PlayStation 5 Console with Ultra-High Speed SSD, Ray Tracing, 4K-TV Gaming.",
+    "score": 7.5,
+    "addedDate": "2023-05-18",
+    "image": "https://i.ibb.co/J32wtzP/ps5.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Bose QuietComfort 35",
+    "description": "Bose QuietComfort 35 Wireless Bluetooth Headphones, Noise-Cancelling.",
+    "score": 8.0,
+    "addedDate": "2023-05-19",
+    "image": "https://i.ibb.co/CBzKzj9/bose-qc35.jpg"
   }
 ]

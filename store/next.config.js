@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ["www.creainc.us", "res.cloudinary.com"],
+    domains: ["www.creainc.us", "i.ibb.co"],
   },
   env: {
     API_HOST: "http://localhost:3001",
