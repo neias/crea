@@ -78,12 +78,12 @@ router.get("/:productId", async (req: Request, res: Response) => {
 
 router.post(
   "/",
-  verifyToken,
   [
     body("productId").isNumeric().withMessage("Product ID must be a number"),
     body("username").notEmpty().withMessage("Username is required"),
     body("comment").notEmpty().withMessage("Comment is required"),
     body("addedDate").isDate().withMessage("Added Date must be a date"),
+    body("score").isNumeric().notEmpty().withMessage("Score is required"),
   ],
   async (req: Request, res: Response) => {
     const errors = validationResult(req);
