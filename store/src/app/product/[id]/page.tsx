@@ -1,11 +1,10 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import Image from "next/image";
-import { FormInput } from "@/components/base-component/Form";
-import Button from "@/components/base-component/Button";
-import StarRating from "@/components/star-rating";
-import Comments from "@/components/Comments";
+
+import Comments from "@/components/comments";
+import AddComment from "@/components/comment-add";
+import ProductDetail from "@/components/product-detail";
 import { format } from "date-fns";
 
 const apiHost = process.env.API_HOST;
@@ -81,39 +80,7 @@ const ProductDetailPage = ({ params }) => {
   return (
     product && (
       <>
-        <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl m-4">
-          <div className="md:flex">
-            <div className="md:flex-shrink-0">
-              <Image
-                src={product.image}
-                alt={product.name}
-                width={200}
-                height={200}
-              />
-            </div>
-            <div className="p-8">
-              <StarRating score={Math.floor(product.score) / 2} />
-              <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-                {product.name}
-              </div>
-              <p className="block mt-1 text-lg leading-tight font-medium text-black">
-                {product.description}
-              </p>
-              <p className="mt-2 text-gray-500">Score: {product.score}</p>
-              <div className="uppercase tracking-wide text-sm text-red-600 font-semibold">
-                {product.price}
-              </div>
-              <p className="mt-2 text-gray-500">
-                Arrival Date:{" "}
-                {new Date(product.arrivalDate).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ProductDetail product={product} />
 
         <div>
           <div className="flex mb-4">
@@ -142,44 +109,11 @@ const ProductDetailPage = ({ params }) => {
                 <div className="pb-10 mt-5">
                   <Comments comments={comments} />
                 </div>
-
-                <div className="px-5 pt-3 pb-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                  <div className="flex w-full text-xs text-slate-500 sm:text-sm ">
-                    <div className="mr-2">Comments:</div>
-                    <div className="ml-auto">Score:</div>
-                  </div>
-                  <form onSubmit={commentSubmit}>
-                    <div className="items-center w-full mt-3">
-                      <div className="flex flex-col text-slate-600">
-                        <div className="flex mb-3">
-                          <FormInput
-                            type="text"
-                            className="w-3/4 pr-10 mr-3 border-transparent bg-slate-100"
-                            placeholder="Post a comment..."
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                          />
-                          <FormInput
-                            type="number"
-                            min="0"
-                            max="5"
-                            className="w-1/4 pr-10 border-transparent bg-slate-100"
-                            placeholder="Score"
-                            value={score}
-                            onChange={(e) => setScore(e.target.value)}
-                          />
-                        </div>
-                        <Button
-                          variant="secondary"
-                          className="mt-3 text-xs"
-                          type="submit"
-                        >
-                          Comment
-                        </Button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
+                <AddComment
+                  commentSubmit={commentSubmit}
+                  comment={comment}
+                  score={score}
+                />
               </div>
             )}
           </div>
