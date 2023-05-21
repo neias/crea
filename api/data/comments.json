@@ -6,8 +6,8 @@
     "comment": "Great phone, really enjoy using it.",
     "addedDate": "2023-05-16",
     "score": 9
-},
-    {
+  },
+  {
     "id": 4,
     "productId": 1,
     "username": "Emma Johnson",
@@ -23,7 +23,7 @@
     "addedDate": "2023-05-17",
     "score": 8.5
   },
-    {
+  {
     "id": 4,
     "productId": 3,
     "username": "Emma Johnson",
@@ -86,5 +86,13 @@
     "comment": "A bit overpriced for what it offers.",
     "addedDate": "2023-05-25",
     "score": 7
+  },
+  {
+    "id": 12,
+    "productId": 1,
+    "username": "Emre Acar",
+    "comment": "Great phone, really enjoy using it.",
+    "addedDate": "2023-05-16",
+    "score": 9
   }
 ]

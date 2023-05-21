@@ -2,45 +2,20 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import Image from "next/image";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalf } from "@fortawesome/free-solid-svg-icons";
 import { FormInput } from "@/components/base-component/Form";
 import Button from "@/components/base-component/Button";
+import StarRating from "@/components/star-rating";
+import Comments from "@/components/Comments";
+import { format } from "date-fns";
 
 const apiHost = process.env.API_HOST;
-
-const StarRating = ({ score }) => {
-  const filledStars = Math.floor(score);
-  const halfStars = score % 1 !== 0 ? 1 : 0;
-  const emptyStars = 5 - filledStars - halfStars;
-
-  return (
-    <div className="flex">
-      {[...Array(filledStars)].map((_, index) => (
-        <FontAwesomeIcon
-          key={index}
-          icon={faStar}
-          className="text-yellow-500"
-        />
-      ))}
-      {[...Array(halfStars)].map((_, index) => (
-        <FontAwesomeIcon
-          key={index}
-          icon={faStarHalf}
-          className="text-yellow-500"
-        />
-      ))}
-      {[...Array(emptyStars)].map((_, index) => (
-        <FontAwesomeIcon key={index} icon={faStar} className="text-gray-200" />
-      ))}
-    </div>
-  );
-};
 
 const ProductDetailPage = ({ params }) => {
   const [product, setProduct] = useState(null);
   const [openTab, setOpenTab] = useState(1);
   const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState("");
+  const [score, setScore] = useState(0);
 
   const { id } = params;
 
@@ -73,6 +48,34 @@ const ProductDetailPage = ({ params }) => {
       })
       .then((res) => res.json())
       .then((data) => setComments(data.comments));
+  };
+
+  const commentSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const now = new Date();
+    const formattedDate = format(now, "yyyy-MM-dd HH:mm:ss");
+
+    const response = await fetch(`${apiHost}/comments`, {
+      credentials: "include",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        comment,
+        score,
+        productId: product.id,
+        addedDate: formattedDate,
+        username: "User",
+      }),
+    });
+    if (response.ok) {
+      // successfuly notification
+      handleTabTwo(product.id);
+    } else {
+      console.error(response.errors);
+    }
   };
 
   return (
@@ -137,42 +140,7 @@ const ProductDetailPage = ({ params }) => {
             {openTab === 2 && (
               <div className="border p-4">
                 <div className="pb-10 mt-5">
-                  {comments.map((comment) => (
-                    <div
-                      key={comment.id}
-                      className="pt-5 mt-5 border-t border-slate-200/60 dark:border-darkmode-400"
-                    >
-                      <div className="flex">
-                        <div className="flex-1 ml-3">
-                          <div className="flex items-center">
-                            <a href="" className="font-medium text-sm">
-                              {comment.username}
-                            </a>
-                            <a
-                              href=""
-                              className="ml-auto text-xs text-slate-500"
-                            >
-                              Score
-                              <StarRating
-                                score={Math.floor(comment.score) / 2}
-                              />
-                            </a>
-                          </div>
-                          <div className="text-xs text-slate-500 ">
-                            {new Date(comment.addedDate).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              }
-                            )}
-                          </div>
-                          <div className="mt-2">{comment.comment}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+                  <Comments comments={comments} />
                 </div>
 
                 <div className="px-5 pt-3 pb-5 border-t border-slate-200/60 dark:border-darkmode-400">
@@ -180,29 +148,37 @@ const ProductDetailPage = ({ params }) => {
                     <div className="mr-2">Comments:</div>
                     <div className="ml-auto">Score:</div>
                   </div>
-                  <div className="flex items-center w-full mt-3">
-                    <div className="flex-none w-8 h-8 mr-3 image-fit">
-                      {/* <img
-                    alt="Midone Tailwind HTML Admin Template"
-                    className="rounded-full"
-                    src={faker.photos[0]}
-                  /> */}
+                  <form onSubmit={commentSubmit}>
+                    <div className="items-center w-full mt-3">
+                      <div className="flex flex-col text-slate-600">
+                        <div className="flex mb-3">
+                          <FormInput
+                            type="text"
+                            className="w-3/4 pr-10 mr-3 border-transparent bg-slate-100"
+                            placeholder="Post a comment..."
+                            value={comment}
+                            onChange={(e) => setComment(e.target.value)}
+                          />
+                          <FormInput
+                            type="number"
+                            min="0"
+                            max="5"
+                            className="w-1/4 pr-10 border-transparent bg-slate-100"
+                            placeholder="Score"
+                            value={score}
+                            onChange={(e) => setScore(e.target.value)}
+                          />
+                        </div>
+                        <Button
+                          variant="secondary"
+                          className="mt-3 text-xs"
+                          type="submit"
+                        >
+                          Comment
+                        </Button>
+                      </div>
                     </div>
-                    <div className="relative flex-1 text-slate-600">
-                      <FormInput
-                        type="text"
-                        className="pr-10 border-transparent bg-slate-100"
-                        placeholder="Post a comment..."
-                      />
-                      <Button
-                        variant="secondary"
-                        className="mt-3 text-xs"
-                        type="submit"
-                      >
-                        Comment
-                      </Button>
-                    </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             )}

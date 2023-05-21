@@ -1,14 +1,7 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-type Variant =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "warning"
-  | "pending"
-  | "danger"
-  | "dark";
+type Variant = "primary" | "secondary";
 
 interface ButtonProps extends React.ComponentPropsWithoutRef<"button"> {
   variant?: Variant;
@@ -37,27 +30,6 @@ const Button = forwardRef(
       "[&:hover:not(:disabled)]:bg-slate-100 [&:hover:not(:disabled)]:border-slate-100", // On hover and not disabled
       "[&:hover:not(:disabled)]:dark:border-darkmode-300/80 [&:hover:not(:disabled)]:dark:bg-darkmode-300/80", // On hover and not disabled in dark mode
     ];
-    const success = [
-      "bg-success border-success text-slate-900", // Default
-      "dark:border-success", // Dark mode
-    ];
-    const warning = [
-      "bg-warning border-warning text-slate-900", // Default
-      "dark:border-warning", // Dark mode
-    ];
-    const pending = [
-      "bg-pending border-pending text-white", // Default
-      "dark:border-pending", // Dark mode
-    ];
-    const danger = [
-      "bg-danger border-danger text-white", // Default
-      "dark:border-danger", // Dark mode
-    ];
-    const dark = [
-      "bg-dark border-dark text-white", // Default
-      "dark:bg-darkmode-800 dark:border-transparent dark:text-slate-300", // Dark mode
-      "[&:hover:not(:disabled)]:dark:dark:bg-darkmode-800/70", // On hover and not disabled in dark mode
-    ];
 
     return (
       <button
@@ -67,11 +39,6 @@ const Button = forwardRef(
           generalStyles,
           variant == "primary" && primary,
           variant == "secondary" && secondary,
-          variant == "success" && success,
-          variant == "warning" && warning,
-          variant == "pending" && pending,
-          variant == "danger" && danger,
-          variant == "dark" && dark,
           props.className,
         ])}
       >

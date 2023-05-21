@@ -46,7 +46,13 @@ const addComment = (comment: any): Promise<void> => {
         reject(err);
       } else {
         const comments = JSON.parse(data);
-        comments.push(comment);
+        const id = comments.length + 1;
+        console.log(comments.length);
+        const preComment = {
+          id,
+          ...comment,
+        };
+        comments.push(preComment);
         fs.writeFile(dataPath, JSON.stringify(comments, null, 2), (err) => {
           if (err) {
             reject(err);
@@ -80,9 +86,7 @@ router.post(
   "/",
   [
     body("productId").isNumeric().withMessage("Product ID must be a number"),
-    body("username").notEmpty().withMessage("Username is required"),
     body("comment").notEmpty().withMessage("Comment is required"),
-    body("addedDate").isDate().withMessage("Added Date must be a date"),
     body("score").isNumeric().notEmpty().withMessage("Score is required"),
   ],
   async (req: Request, res: Response) => {
