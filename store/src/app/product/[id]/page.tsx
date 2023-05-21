@@ -40,6 +40,7 @@ const StarRating = ({ score }) => {
 const ProductDetailPage = ({ params }) => {
   const [product, setProduct] = useState(null);
   const [openTab, setOpenTab] = useState(1);
+  const [comments, setComments] = useState([]);
 
   const { id } = params;
 
@@ -57,6 +58,22 @@ const ProductDetailPage = ({ params }) => {
       .then((res) => res.json())
       .then((data) => setProduct(data.product));
   }, [id]);
+
+  const handleTabTwo = (productId) => {
+    setOpenTab(2);
+
+    fetch(`${apiHost}/comments/${productId}`, {
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.status === 400) {
+          throw new Error("Invalid Token");
+        }
+        return res;
+      })
+      .then((res) => res.json())
+      .then((data) => setComments(data.comments));
+  };
 
   return (
     product && (
@@ -98,18 +115,16 @@ const ProductDetailPage = ({ params }) => {
         <div>
           <div className="flex mb-4">
             <button
-              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${
-                openTab === 1 ? "border-b-2 border-blue-500" : ""
-              }`}
+              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${openTab === 1 ? "border-b-2 border-blue-500" : ""
+                }`}
               onClick={() => setOpenTab(1)}
             >
               Datail
             </button>
             <button
-              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${
-                openTab === 2 ? "border-b-2 border-blue-500" : ""
-              }`}
-              onClick={() => setOpenTab(2)}
+              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${openTab === 2 ? "border-b-2 border-blue-500" : ""
+                }`}
+              onClick={() => handleTabTwo(product.id)}
             >
               Comment
             </button>
@@ -122,66 +137,42 @@ const ProductDetailPage = ({ params }) => {
             {openTab === 2 && (
               <div className="border p-4">
                 <div className="pb-10 mt-5">
-                  <div className="pt-5 mt-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                    <div className="flex">
-                      <div className="flex-none w-10 h-10 sm:w-12 sm:h-12 image-fit">
-                        {/* <img
-                        alt="Midone Tailwind HTML Admin Template"
-                          className="rounded-full"
-                          src={fakerData[0].photos[1]}
-                          /> */}
-                      </div>
-                      <div className="flex-1 ml-3">
-                        <div className="flex items-center">
-                          <a href="" className="font-medium text-sm">
-                            Emre Acar
-                          </a>
-                          <a href="" className="ml-auto text-xs text-slate-500">
-                            Score
-                            <StarRating score={Math.floor(6) / 2} />
-                          </a>
-                        </div>
-                        <div className="text-xs text-slate-500 ">
-                          11.11.2022 17:36:21
-                        </div>
-                        <div className="mt-2">
-                          There are many variations of passages of Lorem Ipsum
-                          available, but the majority have suffered alteration
-                          in some form, by injected humour, or randomi
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-5 mt-5 border-t border-slate-200/60 dark:border-darkmode-400">
-                    <div className="flex">
-                      <div className="flex-none w-10 h-10 sm:w-12 sm:h-12 image-fit">
-                        {/* <img
-                        alt="Midone Tailwind HTML Admin Template"
-                          className="rounded-full"
-                          src={fakerData[0].photos[1]}
-                          /> */}
-                      </div>
-                      <div className="flex-1 ml-3">
-                        <div className="flex items-center">
-                          <a href="" className="font-medium text-sm">
-                            Mahmut Keskin
-                          </a>
-                          <a href="" className="ml-auto text-xs text-slate-500">
-                            Score
-                            <StarRating score={Math.floor(6) / 2} />
-                          </a>
-                        </div>
-                        <div className="text-xs text-slate-500 ">
-                          11.11.2022 17:36:21
-                        </div>
-                        <div className="mt-2">
-                          the majority have suffered alteration there are many
-                          variations of passages of Lorem Ipsum in some form,
+                  {comments.map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="pt-5 mt-5 border-t border-slate-200/60 dark:border-darkmode-400"
+                    >
+                      <div className="flex">
+                        <div className="flex-1 ml-3">
+                          <div className="flex items-center">
+                            <a href="" className="font-medium text-sm">
+                              {comment.username}
+                            </a>
+                            <a
+                              href=""
+                              className="ml-auto text-xs text-slate-500"
+                            >
+                              Score
+                              <StarRating
+                                score={Math.floor(comment.score) / 2}
+                              />
+                            </a>
+                          </div>
+                          <div className="text-xs text-slate-500 ">
+                            {new Date(comment.addedDate).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              }
+                            )}
+                          </div>
+                          <div className="mt-2">{comment.comment}</div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
 
                 <div className="px-5 pt-3 pb-5 border-t border-slate-200/60 dark:border-darkmode-400">

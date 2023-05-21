@@ -3,11 +3,13 @@ import fs from "fs";
 import { body, validationResult } from "express-validator";
 import { verifyToken } from "../middlewares/verifyToken";
 import path from "path";
+import util from "util";
 
 const router = express.Router();
 const dataPath = path.join(__dirname, "..", "..", "data", "comments.json");
+const readFile = util.promisify(fs.readFile);
 
-const getComment = (): Promise<any> => {
+const getComments = (): Promise<any> => {
   return new Promise((resolve, rejects) => {
     fs.readFile(dataPath, "utf8", (err, data) => {
       if (err) {
@@ -17,6 +19,24 @@ const getComment = (): Promise<any> => {
       }
     });
   });
+};
+
+const getComment = async (id: Number) => {
+  try {
+    const data = await readFile(dataPath, "utf8");
+    const jsonData = JSON.parse(data);
+
+    const result = jsonData.filter((item: any) => item.productId === id);
+
+    if (result) {
+      return result;
+    } else {
+      throw new Error(`No data found with id: ${id}`);
+    }
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
 };
 
 const addComment = (comment: any): Promise<void> => {
@@ -41,11 +61,19 @@ const addComment = (comment: any): Promise<void> => {
 
 router.get("/", async (_, res: Response) => {
   try {
-    const comments = await getComment();
+    const comments = await getComments();
+    console.log(comments);
     res.json(comments);
   } catch (err) {
     res.status(500).send(err);
   }
+});
+
+router.get("/:productId", async (req: Request, res: Response) => {
+  const { productId } = req.params;
+  const comments = await getComment(Number(productId));
+
+  res.status(200).json({ comments });
 });
 
 router.post(
