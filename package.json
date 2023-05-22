@@ -2,7 +2,7 @@
   "name": "crea",
   "private": true,
   "scripts": {
-    "start": "concurrently \"yarn workspace api run start\" \"yarn workspace store run dev\""
+    "start": "concurrently \"yarn workspace api start\" \"yarn workspace store dev\""
   },
   "workspaces": [
     "api",

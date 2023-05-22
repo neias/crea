@@ -65,7 +65,7 @@ const addComment = (comment: any): Promise<void> => {
   });
 };
 
-router.get("/", async (_, res: Response) => {
+router.get("/", verifyToken, async (_, res: Response) => {
   try {
     const comments = await getComments();
     console.log(comments);
@@ -75,7 +75,7 @@ router.get("/", async (_, res: Response) => {
   }
 });
 
-router.get("/:productId", async (req: Request, res: Response) => {
+router.get("/:productId", verifyToken, async (req: Request, res: Response) => {
   const { productId } = req.params;
   const comments = await getComment(Number(productId));
 

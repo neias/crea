@@ -40,7 +40,7 @@ const getProduct = async (id: Number) => {
   }
 };
 
-router.get("/", async (_, res: Response) => {
+router.get("/", verifyToken, async (_, res: Response) => {
   try {
     const products = await getProducts();
 
@@ -50,7 +50,7 @@ router.get("/", async (_, res: Response) => {
   }
 });
 
-router.get("/:productId", async (req: Request, res: Response) => {
+router.get("/:productId", verifyToken, async (req: Request, res: Response) => {
   const { productId } = req.params;
   const product = await getProduct(Number(productId));
 

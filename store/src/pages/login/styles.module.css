@@ -1,0 +1,10 @@
+.login-main {
+    @apply p-3 sm:px-8 relative h-screen lg:overflow-hidden bg-primary xl:bg-white;
+    @apply before:hidden before:xl:block before:content-[''] before:w-[87%] before:-mt-[38%] before:-mb-[100%] before:-ml-[3%] before:absolute before:inset-y-0 before:left-0 before:transform before:rotate-[-4.5deg] before:bg-primary/20 before:rounded-[100%];
+    @apply after:hidden after:xl:block after:content-[''] after:w-[57%] after:-mt-[20%] after:-mb-[13%] after:-ml-[23%] after:absolute after:inset-y-0 after:left-0 after:transform after:rotate-[-4.5deg] after:bg-primary after:rounded-[100%];
+
+}
+
+.login-box {
+    @apply w-full px-5 py-8 mx-auto my-auto bg-white rounded-md shadow-md xl:ml-20  xl:bg-transparent sm:px-8 xl:p-0 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto;
+}
