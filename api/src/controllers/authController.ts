@@ -35,6 +35,7 @@ router.post("/login", async (req, res) => {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 30,
       secure: false,
+      path: "/",
     });
 
     res.setHeader("Set-Cookie", serialized);
