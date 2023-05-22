@@ -1,6 +1,4 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 import ProductList from "../../components/product-list";
 

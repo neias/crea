@@ -41,7 +41,12 @@ router.post("/login", async (req, res) => {
     return res.status(200).json({ token });
   }
 
-  res.status(400).json({ message: "Invalid username or password" });
+  res.status(401).json({
+    error: {
+      type: "info",
+      message: "Username or password is incorrect.",
+    },
+  });
 });
 
 router.get("/logout", (req, res) => {

@@ -6,7 +6,7 @@ const ErrorSchema = z.union([
     type: z.literal("invalidToken"),
   }),
   z.object({
-    type: z.literal("network"),
+    type: z.literal("info"),
     message: z.string(),
   }),
   z.object({

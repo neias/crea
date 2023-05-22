@@ -1,22 +1,23 @@
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "react-query";
 import { z } from "zod";
 import { twMerge } from "tailwind-merge";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 import { FormInput } from "@/components/base-component/Form";
 import Button from "@/components/base-component/Button";
-
-// import { useLogin } from "../../hooks/useLogin";
+import ErrorSchema from "@/types/Error";
+import LoginSchema from "@/types/Login";
 
 import styles from "./styles.module.css";
 
 const apiHost = process.env.API_HOST;
 
-const loginSchema = z.object({
-  username: z.string().nonempty("Username is required"),
-  password: z.string().nonempty("Password is required"),
-});
+type FormData = z.infer<typeof LoginSchema>;
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -24,7 +25,7 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
 
-  const loginMutation = useMutation((data) => {
+  const loginMutation = useMutation(async (data) => {
     return fetch(`${apiHost}/auth/login`, {
       method: "POST",
       headers: {
@@ -35,14 +36,27 @@ const LoginPage = () => {
     }).then((response) => response.json());
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       // Checking input data for schema compliance
-      loginSchema.parse(data);
+      LoginSchema.parse(data);
 
-      const m = await loginMutation.mutateAsync(data);
+      const response = await loginMutation.mutateAsync(data);
 
-      console.log(m);
+      if (response.error) {
+        const validationResult = ErrorSchema.safeParse(response.error);
+        if (validationResult.success) {
+          const matchedError = validationResult.data;
+          switch (matchedError.type) {
+            case "info":
+              toast.error(matchedError.message);
+              break;
+          }
+        } else {
+        }
+      } else {
+        router.push("/product");
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => {
@@ -96,7 +110,6 @@ const LoginPage = () => {
                       variant="primary"
                       className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3 max-xl:mb-3"
                       type="submit"
-                      disabled={loginMutation.isLoading}
                     >
                       {loginMutation.isLoading ? "Loading..." : "Login"}
                     </Button>
