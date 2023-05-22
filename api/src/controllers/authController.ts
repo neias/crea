@@ -21,7 +21,6 @@ router.post("/login", async (req, res) => {
   const { username, password } = req.body;
   const user = users.find((u) => u.username === username);
 
-  // @TODO: will be defined jwt_sercret
   if (!JWT_SECRET) {
     throw new Error("JWT_SECRET is not defined in the environment variables.");
   }
