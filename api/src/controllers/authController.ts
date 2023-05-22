@@ -46,7 +46,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  /*   const { cookies } = req;
+  const { cookies } = req;
 
   const jwt = cookies?.JWTToken;
 
@@ -63,7 +63,7 @@ router.get("/logout", (req, res) => {
   });
 
   res.setHeader("Set-Cookie", serialized);
-  res.status(200).json({ message: "successfully logged out" }); */
+  res.status(200).json({ message: "successfully logged out" });
 });
 
 export default router;

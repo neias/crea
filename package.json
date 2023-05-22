@@ -1,0 +1,14 @@
+{
+  "name": "crea",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"yarn workspace api run start\" \"yarn workspace store run dev\""
+  },
+  "workspaces": [
+    "api",
+    "store"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  }
+}
