@@ -13,4 +13,6 @@ const ProductSchema = z.object({
 });
 
 // TypeScript type inference
-export type Product = z.infer<typeof ProductSchema>;
+// export type Product = z.infer<typeof ProductSchema>;
+
+export default ProductSchema;

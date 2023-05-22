@@ -64,6 +64,7 @@ router.get("/logout", (req, res) => {
     httpOnly: true,
     secure: false,
     maxAge: -1,
+    path: "/",
   });
 
   res.setHeader("Set-Cookie", serialized);

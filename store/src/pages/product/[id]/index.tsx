@@ -1,22 +1,23 @@
-"use client";
-
 import { FormEvent, useEffect, useState } from "react";
 
 import Comments from "@/components/comments";
 import AddComment from "@/components/comment-add";
 import ProductDetail from "@/components/product-detail";
+import { useRouter } from "next/router";
 import { format } from "date-fns";
 
 const apiHost = process.env.API_HOST;
 
-const ProductDetailPage = ({ params }) => {
+const ProductDetailPage = () => {
+  const router = useRouter();
+
   const [product, setProduct] = useState(null);
   const [openTab, setOpenTab] = useState(1);
   const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [score, setScore] = useState(0);
 
-  const { id } = params;
+  const { id } = router.query;
 
   useEffect(() => {
     fetch(`${apiHost}/products/${id}`, {

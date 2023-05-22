@@ -11,7 +11,7 @@ export const verifyToken = (
   const token = req.cookies?.JWTToken;
 
   if (!token) {
-    return res.status(400).send({
+    return res.status(401).send({
       auth: false,
       message: "No token provided.",
     });

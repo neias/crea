@@ -3,7 +3,8 @@ import { z } from "zod";
 // Error schema definition
 const ErrorSchema = z.union([
   z.object({
-    type: z.literal("invalidToken"),
+    auth: z.boolean(false),
+    message: z.string(),
   }),
   z.object({
     type: z.literal("info"),
