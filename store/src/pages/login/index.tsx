@@ -1,35 +1,30 @@
-"use client";
-
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
 import { FormInput } from "@/components/base-component/Form";
 import Button from "@/components/base-component/Button";
 
-import { useLogin } from "../../hooks/useLogin";
+// import { useLogin } from "../../hooks/useLogin";
 
 import styles from "./styles.module.css";
-
 const apiHost = process.env.API_HOST;
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { register, handleSubmit } = useForm();
 
-  const router = useRouter();
+  const loginMutation = useMutation((data) => {
+    return fetch(`${apiHost}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+      credentials: "include",
+    }).then((response) => response.json());
+  });
 
-  /* const { mutate, isLoading, isSuccess, isError, error } = useLogin(
-   *   username,
-   *   password
-   * ); */
-
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    //    mutate();
+  const onSubmit = (data) => {
+    loginMutation.mutate(data);
   };
-
-  /* if (isSuccess) {
-   *   router.push("/products");
-   * } */
 
   return (
     <>
@@ -39,24 +34,20 @@ const LoginPage = () => {
             <div className="flex hidden min-h-screen xl:flex"></div>
             <div className="flex col-span-2 h-screen py-5 my-10 xl:h-auto xl:py-0 xl:my-0">
               <div className={styles["login-box"]}>
-                <form onSubmit={onSubmit}>
-                  <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
-                    Sign In
-                  </h2>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <h2 className={styles["login-title"]}>Sign In</h2>
                   <div className="mt-8 intro-x">
                     <FormInput
                       type="text"
-                      className="block px-4 py-3 intro-x min-w-full xl:min-w-[350px]"
+                      className="block px-4 py-3 min-w-full xl:min-w-[350px]"
                       placeholder="Username"
-                      value={username}
-                      onChange={(event) => setUsername(event.target.value)}
+                      {...register("username")}
                     />
                     <FormInput
                       type="password"
-                      className="block px-4 py-3 mt-4 intro-x min-w-full xl:min-w-[350px]"
+                      className="block px-4 py-3 mt-4 min-w-full xl:min-w-[350px]"
                       placeholder="Password"
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
+                      {...register("password")}
                     />
                   </div>
                   <div className="mt-5 text-center intro-x xl:mt-8 xl:text-left">
@@ -65,14 +56,7 @@ const LoginPage = () => {
                       className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3 max-xl:mb-3"
                       type="submit"
                     >
-                      Login
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      className="w-full px-4 py-3 align-top xl:w-32 xl:mr-3"
-                      type="submit"
-                    >
-                      Register
+                      {loginMutation.isLoading ? "Loading..." : "Login"}
                     </Button>
                   </div>
                 </form>
