@@ -3,7 +3,7 @@ import { z } from "zod";
 // Error schema definition
 const ErrorSchema = z.union([
   z.object({
-    auth: z.boolean(false),
+    auth: z.boolean(),
     message: z.string(),
   }),
   z.object({

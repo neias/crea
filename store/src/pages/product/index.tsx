@@ -1,6 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/router";
 
@@ -8,7 +6,8 @@ import ProductList from "../../components/product-list";
 
 import ErrorSchema from "@/types/Error";
 import ProductSchema from "@/types/Product";
-const ProductListSchema = z.array(ProductSchema);
+// TODO: Eklenebilir
+// const ProductListSchema = z.array(ProductSchema);
 
 const apiHost = process.env.API_HOST;
 
@@ -37,6 +36,7 @@ const ProductsPage = () => {
     const validationResult = ErrorSchema.safeParse(error);
     if (validationResult.success) {
       const mathedError = validationResult.data;
+
       if (!mathedError.auth) {
         router.push("/login");
       }
@@ -49,7 +49,7 @@ const ProductsPage = () => {
       <div className="grid grid-cols-12 gap-6 mt-5">
         {/* BEGIN: Product List */}
 
-        {data?.map((product) => (
+        {data?.map((product: z.TypeOf<typeof ProductSchema>) => (
           <ProductList key={product.id} product={product} />
         ))}
         {/* BEGIN: Product List */}
