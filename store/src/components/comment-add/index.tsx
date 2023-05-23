@@ -1,7 +1,13 @@
 import { FormInput } from "@/components/base-component/Form";
 import Button from "@/components/base-component/Button";
 
-const addComment = ({ commentSubmit, comment, score }) => {
+const addComment = ({
+  commentSubmit,
+  comment,
+  setComment,
+  score,
+  setScore,
+}) => {
   return (
     <div className="px-5 pt-3 pb-5 border-t border-slate-200/60 dark:border-darkmode-400">
       <div className="flex w-full text-xs text-slate-500 sm:text-sm ">
@@ -22,7 +28,7 @@ const addComment = ({ commentSubmit, comment, score }) => {
               <FormInput
                 type="number"
                 min="0"
-                max="5"
+                max="10"
                 className="w-1/4 pr-10 border-transparent bg-slate-100"
                 placeholder="Score"
                 value={score}

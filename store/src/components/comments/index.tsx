@@ -1,9 +1,46 @@
-import StarRating from "@/components/star-rating";
+import { useQuery } from "react-query";
+import { z } from "zod";
+import { useRouter } from "next/router";
 
-const Comments = ({ comments }) => {
+import StarRating from "@/components/star-rating";
+import ErrorSchema from "@/types/Error";
+
+const apiHost = process.env.API_HOST;
+
+const Comments = ({ productId }) => {
+  const router = useRouter();
+  const { data, error, isLoading } = useQuery("products", async () => {
+    const res = await fetch(`${apiHost}/comments/${productId}`, {
+      credentials: "include",
+    });
+
+    if (res.status === 401) {
+      throw { auth: false, message: "No token provided." };
+    }
+
+    const jsonData = await res.json();
+
+    return jsonData.comments;
+  });
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (error) {
+    const validationResult = ErrorSchema.safeParse(error);
+    if (validationResult.success) {
+      const mathedError = validationResult.data;
+
+      if (!mathedError.auth) {
+        router.push("/login");
+      }
+    }
+  }
+
   return (
     <>
-      {comments.map((comment) => (
+      {data.map((comment) => (
         <div
           key={comment.id}
           className="pt-5 mt-5 border-t border-slate-200/60 dark:border-darkmode-400"

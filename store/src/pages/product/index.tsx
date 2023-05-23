@@ -6,8 +6,7 @@ import ProductList from "../../components/product-list";
 
 import ErrorSchema from "@/types/Error";
 import ProductSchema from "@/types/Product";
-// TODO: Eklenebilir
-// const ProductListSchema = z.array(ProductSchema);
+// TODO: const ProductListSchema = z.array(ProductSchema);
 
 const apiHost = process.env.API_HOST;
 

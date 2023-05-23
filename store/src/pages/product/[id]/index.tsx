@@ -1,55 +1,63 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import Comments from "@/components/comments";
 import AddComment from "@/components/comment-add";
 import ProductDetail from "@/components/product-detail";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
+import ErrorSchema from "@/types/Error";
 
 const apiHost = process.env.API_HOST;
 
 const ProductDetailPage = () => {
   const router = useRouter();
-
-  const [product, setProduct] = useState(null);
   const [openTab, setOpenTab] = useState(1);
-  const [comments, setComments] = useState([]);
   const [comment, setComment] = useState("");
   const [score, setScore] = useState(0);
 
-  const { id } = router.query;
+  const [id, setId] = useState<string | undefined>(undefined);
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
-    fetch(`${apiHost}/products/${id}`, {
-      credentials: "include",
-      method: "GET",
-    })
-      .then((res) => {
-        if (res.status === 400) {
-          throw new Error("Invalid Token");
-        }
-        return res;
-      })
-      .then((res) => res.json())
-      .then((data) => setProduct(data.product));
-  }, [id]);
+    setId(router.query.id as string);
+  }, [router.query]);
 
-  const handleTabTwo = (productId) => {
-    setOpenTab(2);
+  const { data, error, isLoading } = useQuery(
+    ["products", id],
+    async () => {
+      const res = await fetch(`${apiHost}/products/${id}`, {
+        credentials: "include",
+        method: "GET",
+      });
 
-    fetch(`${apiHost}/comments/${productId}`, {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.status === 400) {
-          throw new Error("Invalid Token");
-        }
-        return res;
-      })
-      .then((res) => res.json())
-      .then((data) => setComments(data.comments));
-  };
+      if (res.status === 401) {
+        throw { auth: false, message: "No token provided." };
+      }
 
+      const jsonData = await res.json();
+      return jsonData.product;
+    },
+    { enabled: !!id }
+  );
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (error) {
+    const validationResult = ErrorSchema.safeParse(error);
+    if (validationResult.success) {
+      const mathedError = validationResult.data;
+
+      if (!mathedError.auth) {
+        router.push("/login");
+      }
+    }
+  }
+
+  // TODO: useMutation should be added
   const commentSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -65,55 +73,56 @@ const ProductDetailPage = () => {
       body: JSON.stringify({
         comment,
         score,
-        productId: product.id,
+        productId: data.id,
         addedDate: formattedDate,
         username: "User",
       }),
     });
     if (response.ok) {
-      // successfuly notification
-      handleTabTwo(product.id);
+      queryClient.invalidateQueries("products");
+      // TODO: successfuly notification
     } else {
       console.error(response.errors);
     }
   };
 
   return (
-    product && (
+    data && (
       <>
-        <ProductDetail product={product} />
-
+        <ProductDetail product={data} />
         <div>
           <div className="flex mb-4">
             <button
-              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${openTab === 1 ? "border-b-2 border-blue-500" : ""
-                }`}
+              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${
+                openTab === 1 ? "border-b-2 border-blue-500" : ""
+              }`}
               onClick={() => setOpenTab(1)}
             >
               Datail
             </button>
             <button
-              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${openTab === 2 ? "border-b-2 border-blue-500" : ""
-                }`}
-              onClick={() => handleTabTwo(product.id)}
+              className={`py-2 px-4 bg-white text-gray-800 font-semibold ${
+                openTab === 2 ? "border-b-2 border-blue-500" : ""
+              }`}
+              onClick={() => setOpenTab(2)}
             >
               Comment
             </button>
           </div>
 
           <div className="w-full">
-            {openTab === 1 && (
-              <div className="border p-4">{product.details}</div>
-            )}
+            {openTab === 1 && <div className="border p-4">{data.details}</div>}
             {openTab === 2 && (
               <div className="border p-4">
                 <div className="pb-10 mt-5">
-                  <Comments comments={comments} />
+                  <Comments productId={id} />
                 </div>
                 <AddComment
                   commentSubmit={commentSubmit}
                   comment={comment}
+                  setComment={setComment}
                   score={score}
+                  setScore={setScore}
                 />
               </div>
             )}
